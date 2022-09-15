@@ -13,10 +13,10 @@ npm i
 ```
 
 Then you create a .env file and add this to it replacing the 
-**user**, **password**, **port** and **database**
+**password** and **database**
 
 ```env
-DATABASE_URL="postgresql://user:password@localhost:5432/database?schema=public"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/database?schema=public"
 ```
 
 Now you must create the docker container, you can use the following command
@@ -53,3 +53,8 @@ email and ***token*** filled with an user token.
 
 I've never made an api documentation, that's why for now you need to look the routers 
 to fill your *postman*, but I'm learning about this, as soon as possible I'll make it.
+
+You can see the database with the following command
+```bash
+npx prisma studio
+```
