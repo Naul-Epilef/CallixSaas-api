@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  token     String?  @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  support   Support[]
+  sell      Sell[]
+
+  @@map("users")
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  support   Support[]
+  sell      Sell[]
+
+  @@map("clients")
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sell      Sell[]
+
+  @@map("products")
+}
+
+model Support {
+  id        String   @id @default(uuid())
+  userId    String
+  clientId  String
+  status    String   @default("open")
+  user      User     @relation(fields: [userId], references: [id])
+  client    Client   @relation(fields: [clientId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("supports")
+}
+
+model Sell {
+  id        String   @id @default(uuid())
+  userId    String
+  clientId  String
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  client    Client   @relation(fields: [clientId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("sells")
+}
